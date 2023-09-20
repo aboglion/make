@@ -1,4 +1,3 @@
-
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
     PYTHON := venv\Scripts\python.exe
@@ -8,8 +7,9 @@ else
     PYTHON := venv/bin/python3
     VENV_ACTIVATE := venv/bin/activate
 endif
-default: ?
 
+default:
+	help
 
 # הכנת הסביבה הווירטואלית
 init:
@@ -31,8 +31,13 @@ req:
 	$(PYTHON) -m pip freeze > requirements.txt
 
 # הרצת הקוד
-run $(TARGET):
-	$(PYTHON) $(TARGET).py
+run:
+	@if [ -z "$(filter-out run,$(MAKECMDGOALS))" ]; then \
+		echo "Please specify a Python script to run using 'make -f py run my_script'"; \
+    	exit 1; \
+    fi
+	@echo Running $(filter-out run,$(MAKECMDGOALS)).py
+	$(PYTHON) $(filter-out run,$(MAKECMDGOALS)).py
 
 # ניקוי הסביבה הווירטואלית
 clean:
@@ -44,23 +49,23 @@ endif
 
 exit:
 ifeq ($(detected_OS),Windows)
-    @echo "Deactivating virtual environment (Windows)"
-    @call $(VENV_ACTIVATE) && deactivate
+	echo "Deactivating virtual environment (Windows)"
+	call $(VENV_ACTIVATE) && deactivate
 else
-    @echo "Deactivating virtual environment (Unix)"
-    @deactivate
+	echo "Deactivating virtual environment (Unix)"
+	deactivate
 endif
 
 # Help target
 help:
-    @echo "Available targets:"
-    @echo ""
-    @echo "init      - Initialize the virtual environment and install dependencies."
-    @echo "active    - Instructions for manually activating the virtual environment."
-    @echo "install   - Install dependencies from requirements.txt."
-    @echo "req       - Generate a list of dependencies into requirements.txt."
-    @echo "run xxx   - Run the code (replace xxx with the name of your Python script without .py)."
-    @echo "clean     - Clean the virtual environment."
-    @echo "exit      - Deactivate the virtual environment."
-    @echo ""
-    @echo "Usage: make <target>"
+	@echo "Available targets:"
+	@echo ""
+	@echo "init      - Initialize the virtual environment and install dependencies."
+	@echo "active    - Instructions for manually activating the virtual environment."
+	@echo "install   - Install dependencies from requirements.txt."
+	@echo "req       - Generate a list of dependencies into requirements.txt."
+	@echo "run-xxx   - Run the code (replace xxx with the name of your Python script without .py)."
+	@echo "clean     - Clean the virtual environment."
+	@echo "exit      - Deactivate the virtual environment."
+	@echo ""
+	@echo "Usage: make -f py <target>"
