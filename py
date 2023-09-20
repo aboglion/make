@@ -31,8 +31,8 @@ req:
 	$(PYTHON) -m pip freeze > requirements.txt
 
 # הרצת הקוד
-run:
-	$(PYTHON) main.py
+run $(TARGET):
+	$(PYTHON) $(TARGET).py
 
 # ניקוי הסביבה הווירטואלית
 clean:
@@ -42,15 +42,25 @@ else
 	rm -rf venv
 endif
 
-# עזרה
-help ?:
-	@echo "אפשרויות הפקודות השונות:"
-	@echo ""
-	@echo "init    - הכנת הסביבה הווירטואלית. יוצר את הסביבה ומתקין את התלות."
-	@echo "active  - הוראות להפעלת הסביבה הווירטואלית בצורה ידנית."
-	@echo "install - התקנת הקבצים התלויים מקובץ ה-requirements.txt."
-	@echo "req     - יצירת רשימת התלויות לקובץ requirements.txt."
-	@echo "run     - הרצת הקוד הראשי (main.py)."
-	@echo "clean   - ניקוי הסביבה הווירטואלית."
-	@echo ""
-	@echo "השתמש ב'make <שם הפקודה>' כדי להפעיל את הפקודה המתאימה."
+exit:
+ifeq ($(detected_OS),Windows)
+    @echo "Deactivating virtual environment (Windows)"
+    @call $(VENV_ACTIVATE) && deactivate
+else
+    @echo "Deactivating virtual environment (Unix)"
+    @deactivate
+endif
+
+# Help target
+help:
+    @echo "Available targets:"
+    @echo ""
+    @echo "init      - Initialize the virtual environment and install dependencies."
+    @echo "active    - Instructions for manually activating the virtual environment."
+    @echo "install   - Install dependencies from requirements.txt."
+    @echo "req       - Generate a list of dependencies into requirements.txt."
+    @echo "run xxx   - Run the code (replace xxx with the name of your Python script without .py)."
+    @echo "clean     - Clean the virtual environment."
+    @echo "exit      - Deactivate the virtual environment."
+    @echo ""
+    @echo "Usage: make <target>"
