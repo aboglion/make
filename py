@@ -1,3 +1,4 @@
+
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
     PYTHON := venv\Scripts\python.exe
@@ -7,6 +8,8 @@ else
     PYTHON := venv/bin/python3
     VENV_ACTIVATE := venv/bin/activate
 endif
+default: ?
+
 
 # הכנת הסביבה הווירטואלית
 init:
