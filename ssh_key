@@ -27,6 +27,7 @@ init:
 		echo "enter it in this link :"; \
 		echo "https://github.com/settings/keys"; \
 	fi
-	ssh -T git@github.com
-
+	echo to test commnction enter :
+	echo ssh -T git@github.com
+	
 
