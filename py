@@ -8,8 +8,7 @@ else
     VENV_ACTIVATE := venv/bin/activate
 endif
 
-default:
-	help
+default:help
 
 # הכנת הסביבה הווירטואלית
 init:
@@ -19,8 +18,8 @@ init:
 
 # הפעלת הסביבה הווירטואלית
 active:
-	@echo "השתמש בפקודה הבאה להפעלת הסביבה:"
-	@echo "source $(VENV_ACTIVATE)"
+	echo "השתמש בפקודה הבאה להפעלת הסביבה:"
+	echo "source $(VENV_ACTIVATE)"
 
 # התקנת הקבצים התלויים
 install:
@@ -34,9 +33,9 @@ req:
 run:
 	@if [ -z "$(filter-out run,$(MAKECMDGOALS))" ]; then \
 		echo "Please specify a Python script to run using 'make -f py run my_script'"; \
-    	exit 1; \
+	exit 1; \
     fi
-	@echo Running $(filter-out run,$(MAKECMDGOALS)).py
+	echo Running $(filter-out run,$(MAKECMDGOALS)).py
 	$(PYTHON) $(filter-out run,$(MAKECMDGOALS)).py
 
 # ניקוי הסביבה הווירטואלית
