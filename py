@@ -6,8 +6,12 @@ else
     detected_OS := $(shell uname -s)
     PYTHON := venv/bin/python3
     VENV_ACTIVATE := venv/bin/activate
+
 endif
 
+    # Install pip if it is not already installed.
+    $(shell which pip || $(PYTHON) -m pip install pip)
+		 
 default:help
 
 # הכנת הסביבה הווירטואלית
