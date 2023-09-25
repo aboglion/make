@@ -72,7 +72,7 @@ run:
         echo "Please specify a Python script to run using 'make -f py run my_script'"; \
     exit 1; \
     fi
-	echo Running $(filter-out run,$(MAKECMDGOALS)).py
+	$(clear_screen)
 	$(PYTHON) $(filter-out run,$(MAKECMDGOALS)).py
 
 # Cleaning the virtual environment
